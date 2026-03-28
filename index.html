@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khemarin Sorn — Mathematics</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>∑</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #faf8f5;
+            --text: #1a1a2e;
+            --text-light: #6b6b80;
+            --accent: #2d4059;
+            --accent-light: #3d5a80;
+            --border: #e5e1db;
+            --card: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(250, 248, 245, 0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s;
+        }
+        nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.05); }
+
+        .nav-inner {
+            max-width: 1100px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'EB Garamond', serif; font-size: 1.35rem; font-weight: 600;
+            color: var(--text); text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            font-size: 0.88rem; color: var(--text-light); text-decoration: none;
+            font-weight: 400; letter-spacing: 0.02em; transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px; background: var(--accent); transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            padding: 4px; background: none; border: none;
+        }
+        .hamburger span {
+            width: 22px; height: 1.5px; background: var(--text); transition: all 0.3s;
+            display: block;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; padding: 2rem;
+        }
+        .math-bg {
+            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.1rem;
+            color: rgba(45, 64, 89, 0.04); line-height: 2.8;
+            pointer-events: none; user-select: none;
+            transform: rotate(-3deg);
+            animation: drift 25s ease-in-out infinite;
+        }
+        @keyframes drift {
+            0%, 100% { transform: rotate(-3deg) translate(0, 0); }
+            33% { transform: rotate(-3deg) translate(4px, -3px); }
+            66% { transform: rotate(-3deg) translate(-3px, 4px); }
+        }
+
+        .hero-content { text-align: center; position: relative; z-index: 1; }
+        .hero-content h1 {
+            font-family: 'EB Garamond', serif; font-size: 4.5rem; font-weight: 500;
+            letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1.2rem;
+            animation: fadeUp 1s ease forwards;
+        }
+        .hero-content .subtitle {
+            font-size: 0.88rem; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--text-light); font-weight: 400;
+            opacity: 0; animation: fadeUp 1s ease 0.2s forwards;
+        }
+        .hero-divider {
+            width: 50px; height: 1.5px; background: var(--accent); margin: 1.8rem auto;
+            opacity: 0; animation: fadeUp 1s ease 0.4s forwards;
+        }
+        .hero-content .affiliation {
+            font-family: 'EB Garamond', serif; font-size: 1.25rem;
+            color: var(--text-light); font-style: italic;
+            opacity: 0; animation: fadeUp 1s ease 0.6s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scroll-hint {
+            position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+            color: var(--text-light); opacity: 0.4;
+            animation: softBounce 2.5s ease-in-out infinite;
+        }
+        .scroll-hint svg { width: 18px; height: 18px; }
+        @keyframes softBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(6px); }
+        }
+
+        /* ===== SECTIONS ===== */
+        .section { max-width: 780px; margin: 0 auto; padding: 5rem 2rem; }
+        .section-header { margin-bottom: 2.5rem; }
+        .section-header h2 {
+            font-family: 'EB Garamond', serif; font-size: 2.2rem; font-weight: 500;
+            margin-bottom: 0.6rem;
+        }
+        .section-line { width: 35px; height: 2px; background: var(--accent); }
+
+        /* ===== ABOUT ===== */
+        .about-text p {
+            font-size: 1.02rem; color: var(--text-light);
+            margin-bottom: 1.2rem; line-height: 1.85;
+        }
+        .interest-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+        .tag {
+            font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.95rem;
+            padding: 0.3rem 1rem; border: 1px solid var(--border); border-radius: 1px;
+            color: var(--accent); background: rgba(45, 64, 89, 0.02);
+        }
+
+        /* ===== RESEARCH CARDS ===== */
+        .project-card {
+            border: 1px solid var(--border); background: var(--card);
+            padding: 2rem; margin-bottom: 1.2rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .project-card:hover { border-color: var(--accent-light); transform: translateY(-2px); }
+        .project-label {
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--accent); font-weight: 600; margin-bottom: 0.4rem;
+        }
+        .project-card h3 {
+            font-family: 'EB Garamond', serif; font-size: 1.35rem;
+            font-weight: 600; margin-bottom: 0.3rem; line-height: 1.3;
+        }
+        .project-meta {
+            font-size: 0.85rem; color: var(--text-light);
+            font-style: italic; margin-bottom: 0.8rem;
+        }
+        .project-card p { font-size: 0.95rem; color: var(--text-light); line-height: 1.75; }
+
+        /* ===== ASIDE NOTES (Papers, Blog) ===== */
+        .aside-note {
+            font-family: 'EB Garamond', serif; font-style: italic;
+            color: var(--text-light); font-size: 1.1rem;
+            padding: 1.5rem 0 1.5rem 1.5rem;
+            border-left: 2px solid var(--border);
+        }
+
+        /* ===== CV ===== */
+        .cv-area { text-align: center; padding: 2rem 0; }
+        .cv-area p { font-size: 1rem; color: var(--text-light); margin-bottom: 1.5rem; }
+        .cv-btn {
+            display: inline-block; font-family: 'EB Garamond', serif;
+            font-size: 1.05rem; letter-spacing: 0.05em;
+            padding: 0.9rem 2.5rem; border: 1.5px solid var(--accent);
+            color: var(--accent); text-decoration: none; transition: all 0.3s;
+        }
+        .cv-btn:hover { background: var(--accent); color: #fff; }
+
+        /* ===== CONTACT ===== */
+        .contact-text {
+            font-size: 1.02rem; color: var(--text-light);
+            margin-bottom: 2rem; line-height: 1.85;
+        }
+        .contact-items { display: flex; gap: 3rem; flex-wrap: wrap; }
+        .contact-item { display: flex; flex-direction: column; gap: 0.3rem; }
+        .contact-label {
+            font-size: 0.72rem; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--text-light); font-weight: 500;
+        }
+        .contact-item a {
+            font-family: 'EB Garamond', serif; font-size: 1.1rem;
+            color: var(--accent); text-decoration: none;
+            border-bottom: 1px solid transparent; transition: border-color 0.3s;
+        }
+        .contact-item a:hover { border-bottom-color: var(--accent); }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center; padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        footer p {
+            font-family: 'EB Garamond', serif; font-style: italic;
+            font-size: 0.9rem; color: var(--text-light);
+        }
+
+        /* ===== REVEAL ANIMATION ===== */
+        .reveal {
+            opacity: 0; transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-content .subtitle { font-size: 0.76rem; }
+            .hero-content .affiliation { font-size: 1.05rem; }
+            .hamburger { display: flex; }
+            .nav-links {
+                display: none; position: absolute; top: 100%; left: 0; right: 0;
+                flex-direction: column; background: rgba(250, 248, 245, 0.98);
+                backdrop-filter: blur(12px); padding: 1rem 2rem 1.5rem;
+                gap: 1rem; border-bottom: 1px solid var(--border);
+            }
+            .nav-links.open { display: flex; }
+            .section { padding: 3.5rem 1.5rem; }
+            .section-header h2 { font-size: 1.8rem; }
+            .project-card { padding: 1.5rem; }
+            .contact-items { flex-direction: column; gap: 1.5rem; }
+            .scroll-hint { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2.2rem; }
+            .nav-inner { padding: 0.9rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">K. Sorn</a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#research">Research</a></li>
+                <li><a href="#papers">Papers</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#cv">CV</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="math-bg" id="mathBg" aria-hidden="true"></div>
+        <div class="hero-content">
+            <h1>Khemarin Sorn</h1>
+            <p class="subtitle">Mathematics &amp; Statistics</p>
+            <div class="hero-divider"></div>
+            <p class="affiliation">University of Melbourne</p>
+        </div>
+        <div class="scroll-hint">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <div class="section-header reveal">
+            <h2>About</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="about-text reveal">
+            <p>
+                I am a first-year undergraduate at the University of Melbourne, pursuing a Bachelor of Science
+                in Mathematics and Statistics. My interests lie broadly in applied mathematics and statistics
+                — from mathematical modelling and optimisation to stochastic processes and data-driven inference.
+            </p>
+            <p>
+                I am currently working with Prof.&nbsp;Lin on a research article concerning constrained
+                quadratic programming, exploring connections between convex function theory, level-set
+                geometry, and analytical solution methods.
+            </p>
+            <p>
+                Before Melbourne, I completed the International Baccalaureate at Li&nbsp;Po&nbsp;Chun
+                United World College in Hong Kong, graduating as Dux with a score of 44/45.
+            </p>
+            <div class="interest-tags">
+                <span class="tag">Applied Mathematics</span>
+                <span class="tag">Mathematical Modelling</span>
+                <span class="tag">Optimisation</span>
+                <span class="tag">Statistics</span>
+                <span class="tag">Stochastic Processes</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section class="section" id="research">
+        <div class="section-header reveal">
+            <h2>Research &amp; Projects</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="reveal">
+            <div class="project-card">
+                <div class="project-label">Current Research</div>
+                <h3>Constrained Quadratic Programming</h3>
+                <div class="project-meta">With Prof. Lin — University of Melbourne, 2026 – Present</div>
+                <p>Developing a mathematics journal article on constrained quadratic programming, leveraging
+                   convex quadratic function and equation theory and level-set geometry to derive analytical
+                   solution methods.</p>
+            </div>
+        </div>
+
+        <div class="reveal">
+            <div class="project-card">
+                <div class="project-label">Independent Research</div>
+                <h3>Epidemiological Modelling</h3>
+                <div class="project-meta">Hong Kong, 2024</div>
+                <p>Constructed and analysed a vaccination-augmented epidemiological model using coupled
+                   differential equations and eigenvalue-based stability analysis. Estimated transmission
+                   dynamics and herd-immunity thresholds (~47%).</p>
+            </div>
+        </div>
+
+        <div class="reveal">
+            <div class="project-card">
+                <div class="project-label">Independent Research</div>
+                <h3>Queueing Theory &amp; Hospital Systems</h3>
+                <div class="project-meta">Hong Kong, 2024</div>
+                <p>Applied stochastic processes and queueing theory (Markov chains, M/M/c models) to
+                   hospital systems, deriving steady-state distributions and expected waiting times.
+                   Validated results via simulation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAPERS -->
+    <section class="section" id="papers">
+        <div class="section-header reveal">
+            <h2>Papers</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="reveal">
+            <p class="aside-note">Forthcoming — currently working on a paper in constrained quadratic programming.</p>
+        </div>
+    </section>
+
+    <!-- BLOG -->
+    <section class="section" id="blog">
+        <div class="section-header reveal">
+            <h2>Blog</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="reveal">
+            <p class="aside-note">Coming soon — first post in the works.</p>
+        </div>
+    </section>
+
+    <!-- CV -->
+    <section class="section" id="cv">
+        <div class="section-header reveal">
+            <h2>Curriculum Vitae</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="cv-area reveal">
+            <p>A summary of my education, research experience, and activities.</p>
+            <a href="cv.pdf" class="cv-btn" target="_blank">Download CV &nbsp;↗</a>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+        <div class="section-header reveal">
+            <h2>Contact</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="reveal">
+            <p class="contact-text">
+                Feel free to reach out — I'm always happy to discuss mathematics,
+                research opportunities, or potential collaborations.
+            </p>
+            <div class="contact-items">
+                <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:khemarin.sorn@student.unimelb.edu.au">khemarin.sorn@student.unimelb.edu.au</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-label">LinkedIn</span>
+                    <a href="https://linkedin.com/in/khems" target="_blank">linkedin.com/in/khems</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Khemarin Sorn</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Generate math background
+        const expressions = [
+            '∫₀^∞ e^{−x²} dx = √π/2', '∇²f = 0', 'det(A − λI) = 0',
+            'P(A|B) = P(B|A)P(A)/P(B)', '∂ℒ/∂θ = 0', '∑ 1/n² = π²/6',
+            'min f(x) s.t. g(x) ≤ 0', 'E[X] = ∫ x dF(x)', 'Ax = b',
+            '∇f = λ∇g', 'dx/dt = Ax', '‖x‖₂ ≤ 1', 'xᵀQx + cᵀx',
+            'Var(X) = E[X²] − μ²', '∂u/∂t = k∇²u', 'rank(A) = n',
+            'tr(AB) = tr(BA)', 'dim(V) = n', 'f(x) = ∑ aₙxⁿ',
+            'λ₁ ≥ λ₂ ≥ ··· ≥ λₙ', 'sup S = inf T', '∂²f/∂x∂y = ∂²f/∂y∂x',
+            'R₀ > 1', 'π(x) ~ x/ln(x)', '∮ F · ds = 0', 'ker(T) ⊆ V'
+        ];
+        const mathBg = document.getElementById('mathBg');
+        let html = '';
+        for (let i = 0; i < 300; i++) {
+            html += expressions[i % expressions.length] + '\u2003\u2003';
+        }
+        mathBg.textContent = '';
+        mathBg.innerHTML = html;
+
+        // Hamburger toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+        navLinks.querySelectorAll('a').forEach(a =>
+            a.addEventListener('click', () => navLinks.classList.remove('open'))
+        );
+
+        // Nav shadow on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
